@@ -1,0 +1,64 @@
+﻿@using System.Collections;
+@model IEnumerable<EMS.Models.PreDefinedTask>
+
+
+<link href="~/Content/date.css" rel="stylesheet" />
+
+
+
+<div id="containeraDate"></div>
+
+
+
+    @foreach (var p in Model)
+    {
+        <div class="alert alert-info">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="h5">@p.Title</div>
+
+                </div>
+                <div class="col-md-2">
+                    @Html.ActionLink("View", "FavouritePreDefinedTaskList", "Event", new { id = @p.PreDefinedTaskId }, new { @class = "btn fullwidthbutton" })
+                </div>
+                <div class="col-md-2">
+                    @using (Ajax.BeginForm("DeleteFavouritePreDefinedTask", "Event", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccess" }))
+                {
+                        <input type="hidden" name="PreDefinedTaskId" value="@p.PreDefinedTaskId">
+                        <span><input class="btn fullwidthbutton" type="submit" value="Delete" /></span>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+    <div class="modal fade" id="fail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="display-4" style="text-align:center">ERROR</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+
+         $.ajax({
+             url: '@Url.Action("CreateUserDefinedTaskDate", "Event", new { id = Url.RequestContext.RouteData.Values["id"] })',
+             type: 'GET',
+             cache: false,
+         }).done(function (result) {
+             $('#containeraDate').html(result);
+         });
+
+
+</script>
+
+

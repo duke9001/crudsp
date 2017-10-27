@@ -1,0 +1,22 @@
+﻿@using System.Collections;
+@model IEnumerable<EMS.Models.PreDefinedTaskListTrack>
+
+
+@foreach (var f in Model)
+{
+
+    if (f.Done == true)
+    {
+        <div class="mb-0" style="font-size: 24px;color: #00c32a;">
+            Done <i class="fa fa-check-square" aria-hidden="true"></i>
+        </div>
+
+    }
+    if (f.Done == false)
+    {
+        <div class="mb-0" style="font-size: 24px;color: #e40f22;">
+            Pending<i class="fa fa-times-circle" aria-hidden="true"></i>
+        </div>
+    }
+
+}

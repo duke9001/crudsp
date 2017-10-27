@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "My Task";
+}
+
+<div class="container py-3">
+    <h2>My Task</h2>
+    <hr />
+    <div class="py-3" id="containera"></div>
+
+</div>
+
+
+
+
+@section scripts {
+    
+    <script>
+            function onsuccess() {
+                $.ajax({
+                    url: '@Url.Action("FavouritePreDefinedTask", "Event",new { id = Url.RequestContext.RouteData.Values["id"] })',
+                    type: 'GET',
+                    cache: false,
+                }).done(function (result) {
+                    $('#containera').html(result);
+                   
+                });
+
+            }
+
+       
+
+
+            function onfailure() {
+                $('#fail').modal('show');
+                setTimeout(function () {
+                    $('#fail').modal('hide')
+                }, 1000);
+
+            }
+    </script>
+    <script type="text/javascript">
+
+            $.ajax({
+                url: '@Url.Action("FavouritePreDefinedTask", "Event",new { id = Url.RequestContext.RouteData.Values["id"] })',
+                type: 'GET',
+                cache: false,
+            }).done(function (result) {
+                $('#containera').html(result);
+            });
+
+        
+
+    </script>
+}

@@ -1,0 +1,96 @@
+﻿@model EMS.Models.PersonalEvent
+
+@{
+    ViewBag.Title = "Event Details";
+}
+
+<div class="container py-3">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    <button type="button" class="btn" data-toggle="modal" data-target="#create">Create</button>
+
+    <div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    @using (Ajax.BeginForm("InsertPersonalEvent/" + Url.RequestContext.RouteData.Values["id"], "Event", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccess" }))
+                    {
+                        <div class="form-group">
+
+                            <div>
+                                @Html.LabelFor(e => e.Name, "Event Name", new { @class = "h6" })
+
+                            </div>
+                            <div>
+                                @Html.TextBoxFor(e => e.Name, new { Style = "width:100%" })
+                                <br /><br />
+                            </div>
+                            <div>
+                                @Html.LabelFor(e => e.Description, "Event Description", new { @class = "h6" })
+
+                            </div>
+                            <div>
+                                @Html.TextAreaFor(e => e.Description, new { Style = "width:100%" })
+                                <br /><br />
+                            </div>
+                            
+                            
+                            <input class="btn" type="submit" value="Submit" id="addnews" />
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="containera" style="margin-top:3%"></div>
+</div>
+
+@section scripts {
+
+    <script>
+        function onsuccess(result) {
+
+            $.ajax({
+                url: '@Url.Action("GetPersonalEvent", "Event",new { id = Url.RequestContext.RouteData.Values["id"] })',
+                type: 'GET',
+                cache: false,
+            }).done(function (result) {
+                $('#containera').html(result);
+                $('#added').modal('show');
+                setTimeout(function () {
+                    $('#added').modal('hide')
+                }, 1000);
+            });
+        }
+
+       
+        function onfailure() {
+            $('#fail').modal('show');
+            setTimeout(function () {
+                $('#fail').modal('hide')
+            }, 1000);
+
+        }
+
+
+
+    </script>
+    <script type="text/javascript">
+
+        $.ajax({
+            url: '@Url.Action("GetPersonalEvent", "Event",new { id = Url.RequestContext.RouteData.Values["id"] })',
+            type: 'GET',
+            cache: false,
+        }).done(function (result) {
+            $('#containera').html(result);
+        });
+
+
+
+    </script>
+}

@@ -1,0 +1,110 @@
+﻿@using System.Collections;
+@model IEnumerable<EMS.Models.PreDefinedTaskList>
+
+
+@{
+    ViewBag.Title = "Favourite TaskList";
+}
+
+
+<script src="~/Scripts/jquery.min.js"></script>
+
+<div class="container py-3">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+        @foreach (var p in Model)
+        {
+
+            <div class="card">
+                <div class="card-header" role="tab" id="headingOne">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5>
+                                <a data-toggle="collapse" data-parent="#accordion" href='#x_@p.Pre_Defined_Task_List_Id' aria-expanded="true" aria-controls="collapseOne">
+                                    @p.Month Month Before Event
+                                </a>
+                            </h5>
+                            <div>Task Belong to @p.Person</div>
+
+                        </div>
+                        <div class="col-md-4">
+                            @using (Ajax.BeginForm("InsertPreDefinedTaskListTrack/" + @p.Pre_Defined_Task_List_Id, "Event", new AjaxOptions
+                            {
+                                HttpMethod = "POST",
+                                OnSuccess = "onsuccess_" + @p.Pre_Defined_Task_List_Id
+                            }))
+
+                            {
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <span>Task is Done? </span>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="submit" value="Yes / No" class="nav-link btn " id="@Url.RequestContext.RouteData.Values["id"]@p.Pre_Defined_Task_List_Id" />
+
+                                    </div>
+                                </div>
+
+
+                            }
+                        </div>
+
+                        <div class="col-md-2">
+
+
+                            <div id="@p.Pre_Defined_Task_List_Id"></div>
+
+                            <script>
+
+                                name = 'onsuccess_@p.Pre_Defined_Task_List_Id';
+                                window[name] = function () { $('#@p.Pre_Defined_Task_List_Id').load("@Url.Action("GetPreDefinedTaskListTrack",
+                                                                           "Event", new { id = @p.Pre_Defined_Task_List_Id })"); }
+
+
+                                function onfailure() {
+
+
+                                }
+
+                            </script>
+                            <script>
+                                $("#@p.Pre_Defined_Task_List_Id").load("@Url.Action("GetPreDefinedTaskListTrack", "Event", new { id = @p.Pre_Defined_Task_List_Id })");
+                            </script>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id='x_@p.Pre_Defined_Task_List_Id' class="collapse " role="tabpanel" aria-labelledby="headingOne">
+                    <div class="container">
+                        <div class="card-block">
+
+                            <div class="py-3">
+
+                                <p>@p.Description</p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+    </script>
+
+
+}
+

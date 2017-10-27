@@ -1,0 +1,63 @@
+﻿@using System.Collections;
+@model IEnumerable<EMS.Models.Guest>
+
+@foreach (var p in Model)
+{
+    <div class="alert alert-info">
+        <div class="row">
+            <div class="col-md-4">
+                <div><b>Guest Name :- </b>@p.Name</div>
+
+            </div>
+            <div class="col-md-2">
+                <div><b>Guest Type :- </b>@p.Type</div>
+            </div>
+
+            <div class="col-md-4">
+                <div><b>Number of People:- </b>@p.NoOfPeople</div>
+            </div>
+
+            <div class="col-md-2">
+                @using (Ajax.BeginForm("DeleteGuestList", "Event", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccessGuestList" }))
+                {
+                    <input type="hidden" name="GuestListId" value="@p.GuestListId">
+                    <span><input class="btn fullwidthbutton" type="submit" value="Delete" /></span>
+                }
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<div class="modal fade" id="added" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="display-4" style="text-align:center">DONE</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="fail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="display-4" style="text-align:center">ERROR</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

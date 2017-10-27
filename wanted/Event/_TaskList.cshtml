@@ -1,0 +1,44 @@
+﻿@using System.Collections;
+@model IEnumerable<EMS.Models.PreDefinedTaskList>
+
+@{
+    ViewBag.Title = "TaskList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-3">
+    <h2>@ViewBag.Title</h2>
+    <hr/>
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+        @foreach (var p in Model)
+        {
+            <div class="card">
+                <div class="card-header" role="tab" id="headingOne">
+                    <h5>
+                        <a data-toggle="collapse" data-parent="#accordion" href='#@p.Pre_Defined_Task_List_Id' aria-expanded="true" aria-controls="collapseOne">
+                            @p.Month Month Before Event
+                        </a>
+                    </h5>
+                    <div>Task Belong to @p.Person</div>
+
+                </div>
+
+                <div id='@p.Pre_Defined_Task_List_Id' class="collapse " role="tabpanel" aria-labelledby="headingOne">
+                    <div class="container">
+                        <div class="card-block">
+
+                            <div class="py-3">
+
+                                <p>@p.Description</p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+

@@ -1,0 +1,83 @@
+﻿@model EMS.Models.UserDefinedTaskDate
+
+
+
+<div class="alert alert-info">
+    <div class="row">
+        <div class="col-md-4">
+            <label class="h5">Add Event Date : </label> @Html.DisplayFor(e => e.NewDate)
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn fullwidthbutton" data-toggle="modal" data-target="#addtDate">Add</button>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn fullwidthbutton" data-toggle="modal" data-target="#editDate">Edit</button>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="modal fade" id="addtDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal">Add</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("CreateUserDefinedTaskDate", "Event", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccessDate" }))
+                {
+
+                    @Html.EditorFor(m => m.NewDate, new { @type = "date" })
+                    <br /><br />
+                        <input class="btn" type="submit" value="Submit" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editDate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal">Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Ajax.BeginForm("UpdateUserDefinedTaskDate/" + Url.RequestContext.RouteData.Values["id"], "Event", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccessDateEdit" }))
+                {
+
+                    @Html.EditorFor(m => m.NewDate, new { @type = "date" })
+                    <br /><br />
+                        <input class="btn" type="submit" value="Submit" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function onsuccessDate() {
+
+        window.location.reload();
+    }
+    function onsuccessDateEdit() {
+
+        window.location.reload();
+    }
+
+
+</script>

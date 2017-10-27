@@ -1,0 +1,92 @@
+﻿@using System.Collections;
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<EMS.Models.PreDefinedTask>
+
+@{
+    ViewBag.Title = "Tutorials";
+}
+
+<div class="container py-3">
+    <h2>@ViewBag.Title</h2>
+    <hr />
+    @foreach (var p in Model)
+    {
+        <div class="alert alert-info">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h5">@p.Title ( by  @Html.ActionLink(@p.Name, "Profile", "Event", new { id = @p.CompanyProfileId },null))</div>
+                    @*<div>@p.PreDefinedTaskId</div>
+                        <div>@Url.RequestContext.RouteData.Values["id"]</div>*@
+
+                </div>
+                <div class="col-md-2">
+                    @Html.ActionLink("Search", "TaskList", "Event", new { id = @p.PreDefinedTaskId }, new { @class = "btn fullwidthbutton" })
+                </div>
+                <div class="col-md-2">
+                    @using (Ajax.BeginForm("CreateFavouritePreDefinedTask", "Event", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccess" }))
+                    {
+                        <input type="hidden" name="PreDefinedTaskId" value="@p.PreDefinedTaskId">
+                        <input type="hidden" name="EventId" value="@Url.RequestContext.RouteData.Values["id"]">
+                        <span><input class="btn fullwidthbutton" type="submit" value="Add to MyTask" /></span>
+                    }
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("Tutorial", new { page = page }), PagedListRenderOptions.PageNumbersOnly)
+    </div>
+
+    @Html.ActionLink("Back", "Dashboard", "Event", new { id = Url.RequestContext.RouteData.Values["id"] }, new { @class = "btn" })
+</div>
+
+<div class="modal fade" id="added" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="display-4" style="text-align:center">DONE</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="fail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="display-4" style="text-align:center">ERROR</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts {
+    <script>
+        function onsuccess() {
+            $('#added').modal('show');
+            setTimeout(function () {
+                $('#added').modal('hide')
+            }, 1000);
+
+        }
+        function onfailure() {
+            $('#fail').modal('show');
+            setTimeout(function () {
+                $('#fail').modal('hide')
+            }, 1000);
+
+        }
+    </script>
+   
+}
+

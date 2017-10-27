@@ -1,0 +1,44 @@
+﻿@using System.Collections;
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<EMS.Models.Event>
+
+
+
+<form method="get">
+
+    <input type="text" name="name" placeholder="Search"  />
+
+    <input type="submit" value="Search" />
+</form>
+<hr />
+
+
+<div class="row">
+
+
+
+    @foreach (var e in Model)
+    {
+        <div class="col-lg-3">
+            <div class="card mb-3">
+                <a href="@Url.Action("Dashboard", "Event", new { id = e.EventId})">
+                    <img class="card-img-top img-fluid w-100" src="@Url.Content(e.Picture)" alt="">
+                </a>
+                <div class="card-body">
+                    <h6 class="card-title mb-1">
+                        @Html.ActionLink(e.Name, "Dashboard", "Event", new { id = e.EventId }, null)
+                    </h6>
+
+                </div>
+                <div class="card-footer small text-muted">
+                    @Html.ActionLink("Start Planing", "Dashboard", "Event", new { id = e.EventId }, new { @class = "btn" })
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+<div class="">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), PagedListRenderOptions.PageNumbersOnly)
+</div>

@@ -1,0 +1,71 @@
+﻿@using System.Collections;
+@model IEnumerable<EMS.Models.PersonalEvent>
+
+@foreach (var c in Model)
+{
+    <div class="">
+        <div class="card mb-3">
+            
+            <div class="card-body">
+
+                <label class="h5">Name : </label>
+                @Html.Label("name", c.Name, new { style = "margin-left: 2%" })
+                <br />
+
+                <label class="h5">Description : </label>
+                @Html.Label("name", c.Description, new { style = "margin-left: 2%" })
+                <br />
+
+                
+
+            </div>
+            <div class="card-footer small text-muted">
+                <div class="row">
+                    <div class="col-md-3">
+                        @using (Ajax.BeginForm("DeletePersonalEvent", "Event", 
+                            new AjaxOptions { HttpMethod = "POST", OnSuccess = "onsuccess" }))
+                        {
+                            <input type="hidden" name="PersonalEventId" value="@c.PersonalEventId">
+                            <span><input class="btn fullwidthbutton" type="submit" value="Delete" /></span>
+                        }
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="added" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="display-4" style="text-align:center">DONE</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="fail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="display-4" style="text-align:center">ERROR</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
