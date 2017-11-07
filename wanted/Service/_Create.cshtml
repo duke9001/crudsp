@@ -1,0 +1,47 @@
+﻿@model EMS.Models.Service
+
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Create Service</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div id="dialog" class="modal-body">
+    <div class="form-group">
+        @using (Ajax.BeginForm("Create", "Service", new AjaxOptions { HttpMethod = "POST", OnSuccess = "onCreatesuccess" }))
+
+        {
+            @Html.HiddenFor(e => e.CompanyProfileId)
+
+
+            <div>
+                @Html.TextBoxFor(e => e.Description, new { @class = "fullwidthbutton", placeholder = "ex:- Photography" })
+                <br /><br />
+                <input type="submit" value="Submit" class="btn" />
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+
+
+        }
+    </div>
+</div>
+<script>
+
+    function onCreatesuccess(result) {
+        if (result) {
+            parent.$('#ServiceModal').modal('hide');
+            var companyProfileId = $('#CompanyProfileId').val();
+            var url = '@Url.Action("ServicesByCompanyProfile", "Service")' + "?CompanyProfileId=" + companyProfileId;
+            ajaxCall(url, false, onCreateRefresh, false, "html");
+        } else {
+            alert("An error occured");
+        }
+    }
+
+    function onCreateRefresh(result) {
+        $('.modal-backdrop').remove();
+        parent.$('#indexdiv').html(result);
+    }
+
+</script>
+

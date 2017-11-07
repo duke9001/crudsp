@@ -1,0 +1,116 @@
+﻿@model IEnumerable<EMS.Models.Service>
+
+@Html.Hidden("CompanyProfileId", (int)ViewBag.CompanyProfileId)
+
+<input type="button" id="add" value="Create" onclick="Create(this)" class="btn" data-x="@ViewBag.CompanyProfileId" />
+
+<div id="companies" style="margin-top:2%">
+    @foreach (var c in Model)
+            {
+        <div class="alert alert-info">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            @Html.Label("name", c.Description,
+                           new { @class="h4", style = "width:100% !important; height:50px !important; "})
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-5">
+                    @Html.Hidden("ServiceId", c.ServiceId)
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input class="btn" type="button" value="Update" data-x="@c.ServiceId" id="Update"
+                                   style="width:100%" onclick="Update(this)">
+                        </div>
+                        @*<div class="col-md-4">
+                            <input class="btn" type="button" value="Delete" data-x="@c.ServiceId" id="Delete"
+                                   style="width:100%" onclick="Delete(this)">
+                        </div>*@
+                        
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+
+<div class="modal fade" id="ServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="dialog">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<script>
+    function Update(e) {
+
+        var serviceId = $(e).attr("data-x");
+        var url = '@Url.Action("Update", new { ServiceId = "x" })'
+        var dec = url.replace("x", serviceId);
+
+        ajaxCall(dec, "GET", onUpdateSuccess, false, "html");
+    }
+
+    function Delete(e) {
+
+        var serviceId = $(e).attr("data-x");
+        ajaxCall('@Url.Action("Delete", "Service")', "POST", onDeleteSuccess, { ServiceId: serviceId });
+
+    }
+
+    function Create(e) {
+        var companyProfileId = $(e).attr("data-x");
+        var url = '@Url.Action("Create", "Service")' + "?CompanyProfileId=" + companyProfileId;
+        ajaxCall(url, false, onCreateSuccess, false, "html");
+    }
+
+    function onDeleteSuccess(result) {
+        if (result) {
+            var companyProfileId = $('#CompanyProfileId').val();
+            var url = '@Url.Action("ServicesByCompanyProfile", "Service")' + "?CompanyProfileId=" + companyProfileId;
+            ajaxCall(url, false, onDeleteRefresh, false, "html");
+        } else {
+            alert("An error occured");
+        }
+    }
+
+    
+
+    function onDeleteRefresh(result) {
+        $('#indexdiv').html(result);
+    }
+
+    function onUpdateSuccess(result) {
+        $("#dialog").html(result);
+        $('#ServiceModal').modal('show');
+    }
+
+    function onCreateSuccess(result) {
+        $("#dialog").html(result);
+        $('#ServiceModal').modal('show');
+    }
+
+
+
+</script>
